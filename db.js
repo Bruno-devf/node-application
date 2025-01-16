@@ -1,99 +1,32 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const bcrypt = require('bcryptjs');
 
-const sequelize = new Sequelize('checklist', 'root', '', {
+const sequelize = new Sequelize('checklist', 'root', 'coxinha2007.', {
     host: 'localhost',
     dialect: 'mysql'
 });
 
 
-const User = sequelize.define('User', {
+const Task = sequelize.define('task', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    email: {
+    description: {
         type: DataTypes.STRING,
+        allowNull: true
+    },
+    status: {
+        type: DataTypes.ENUM('completo', 'pendente'),
         allowNull: false,
-        unique: true
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    }
-}, {
-    timestamps: true,
-    hooks: {
-        beforeCreate: async (user) => {
-            if (user.password) {
-                user.password = await bcrypt.hash(user.password, 10);
-            }
-        },
-        beforeUpdate: async (user) => {
-            if (user.password) {
-                user.password = await bcrypt.hash(user.password, 10);
-            }
-        }
+        defaultValue: 'pendente'
     }
 });
 
-User.prototype.comparePassword = async function (password) {
-    return bcrypt.compare(password, this.password);
-};
-
-const Checklist = sequelize.define('Checklist', {
-    title: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    description: {
-        type: DataTypes.TEXT
-    }
-}, {
-    timestamps: true
-});
-
-const Task = sequelize.define('Task', {
-    title: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    description: {
-        type: DataTypes.TEXT
-    },
-    completed: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-    }
-}, {
-    timestamps: true
-});
-
-const ChecklistTask = sequelize.define('ChecklistTask', {
-    checklist_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'Checklists',
-            key: 'id'
-        }
-    },
-    task_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'Tasks',
-            key: 'id'
-        }
-    }
-}, {
-    timestamps: false
-});
-
-
-User.hasMany(Checklist);
-Checklist.belongsTo(User);
-
-Checklist.belongsToMany(Task, { through: 'ChecklistTask' });
-Task.belongsToMany(Checklist, { through: 'ChecklistTask' });
 
 
 const syncDatabase = async () => {
@@ -105,4 +38,4 @@ const syncDatabase = async () => {
     }
 };
 
-module.exports = { sequelize, syncDatabase, User, Checklist, Task, ChecklistTask };
+module.exports = { sequelize, syncDatabase, Task };

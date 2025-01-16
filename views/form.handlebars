@@ -1,11 +1,99 @@
-<form action="" method="post">
-    <P>Nome</P>
-    <input type="text" name="name">
-    <P>Email</P>
-    <input type="text" name="email">
-    <P>Senha</P>
-    <input type="password" name="password">
-    <br>
-    <br>
-    <button type="submit">Enviar</button>
-</form>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Tarefa</title>
+    <style>
+        /* Definindo a fonte */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Contêiner do formulário */
+        form {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.3s ease;
+        }
+
+        /* Cabeçalho do formulário */
+        form p {
+            font-size: 1.1em;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        /* Estilo dos campos de input */
+        input[type="text"] {
+            width: 90%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #5c6bc0;
+            outline: none;
+        }
+
+        /* Estilo do botão */
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #5c6bc0, #3f51b5);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #3f51b5, #5c6bc0);
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            form {
+                width: 90%;
+                padding: 15px;
+            }
+
+            input[type="text"],
+            button {
+                padding: 10px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <form action="/cadastrotask" method="post">
+        <p>Nome da tarefa</p>
+        <input type="text" name="name" required>
+
+        <p>Descrição da tarefa</p>
+        <input type="text" name="description" required>
+
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+
+</html>
