@@ -167,7 +167,6 @@
     <div class="card-container">
         <h1>Lista de Tarefas:</h1>
 
-        <!-- Botão para ir à página de cadastro -->
         <div class="mb-3 text-center">
             <a href="/cadastro" class="btn btn-primary">Cadastrar Tarefa</a>
         </div>
@@ -185,7 +184,6 @@
                 <h2>{{this.name}}</h2>
                 <p>{{this.description}}</p>
 
-                <!-- Checkbox para editar o status -->
                 <form action="/update-status/{{this.id}}" method="post">
                     <label>
                         <input type="checkbox" name="status" value="completo" {{#if (eq this.status 'completo' )
@@ -209,12 +207,12 @@
             const confirmation = confirm('Você tem certeza que deseja excluir essa tarefa?');
             if (confirmation) {
                 fetch(`/delete/${taskId}`, {
-                    method: 'GET', // Usando GET para deletar
+                    method: 'GET',
                 })
                     .then(response => {
                         if (response.ok) {
                             alert('Tarefa excluída com sucesso!');
-                            window.location.reload();  // Recarrega a página
+                            window.location.reload();
                         } else {
                             alert('Erro ao excluir tarefa.');
                         }
@@ -227,7 +225,6 @@
         }
     </script>
 
-    <!-- Adicionando o JS do Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

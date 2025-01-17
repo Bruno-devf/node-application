@@ -32,6 +32,9 @@ const hbs = exphbs.create({
     helpers: {
         eq: function (a, b) {
             return a === b;
+        },
+        json: function (context) {
+            return JSON.stringify(context);
         }
     }
 });
@@ -43,6 +46,7 @@ app.set('view engine', 'handlebars');
 
 //rotas
 
+//delete task
 app.get('/delete/:id', (req, res) => {
     const taskId = req.params.id;
     Task.destroy({ where: { id: taskId } }).then(() => {
@@ -53,6 +57,7 @@ app.get('/delete/:id', (req, res) => {
     });
 });
 
+//update status
 app.post('/update-status/:id', (req, res) => {
     const taskId = req.params.id;
     const newStatus = req.body.status === 'completo' ? 'completo' : 'pendente';
@@ -73,14 +78,15 @@ app.post('/update-status/:id', (req, res) => {
 
 
 
-
+//rota para achar tarefa para editar
 app.get('/editar-tarefa/:id', async (req, res) => {
     const taskId = req.params.id;
+
     try {
         const task = await Task.findByPk(taskId);
 
         if (task) {
-            res.render('edit', { task });
+            res.render('edit', { task: task.toJSON() });
         } else {
             res.status(404).send('Tarefa não encontrada');
         }
@@ -90,8 +96,8 @@ app.get('/editar-tarefa/:id', async (req, res) => {
     }
 });
 
+//rota que atualiza a tarefa
 app.post('/atualizar-tarefa/:id', async (req, res) => {
-    console.log(req.body);
     const taskId = req.params.id;
     const { name, description } = req.body;
 
@@ -115,7 +121,7 @@ app.post('/atualizar-tarefa/:id', async (req, res) => {
 
 
 
-
+//rota principal que mostra as tarefas
 
 app.get('/', (req, res) => {
     Task.findAll({ order: [['id', 'DESC']] }).then(tasks => {
@@ -127,7 +133,7 @@ app.get('/', (req, res) => {
     });
 });
 
-
+//rotas para cadastrar tarefa
 
 app.get('/cadastro', (req, res) => {
     res.render('form');
@@ -138,9 +144,9 @@ app.post('/cadastrotask', async (req, res) => {
     const task = await Task.create({ name, description });
     res.redirect('/');
 });
+//fim das rotas
 
-
-//config do servidor
+//config do servidor e conexão do banco
 
 syncDatabase();
 app.listen(port, () => {
